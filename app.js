@@ -56,10 +56,7 @@ controller.hears(['create a card'], 'mention', (bot, message) => {
 });
 
 askCardType = function(response, convo) {
-	console.log('First Convo: ' + JSON.stringify(convo));
-
 	convo.ask('Is this a daily goal?', (response, convo) => {
-		console.log('Second Convo: ' + JSON.stringify(convo));
 		console.log('First Response: ' + JSON.stringify(response));
 		askGoalName(response, convo);
 		convo.next();

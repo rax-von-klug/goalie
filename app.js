@@ -51,49 +51,64 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 	});
 });
 
-controller.hears(['create card'], 'mention', (bot, message) => {
-	bot.startConversation(message, (err, convo) => {
-		convo.ask('Is this a daily goal?', [
-			{
-				pattern: bot.utterances.yes,
-				callback: function(response,convo) {
-					convo.say({
-						type: 'typing',
-						channel: response.channel
-					});
-
-					convo.say('What is the goal?');
-						convo.next();
-				}
-			},
-			{
-				callback: function(response, convo) {
-					convo.say({
-						type: 'typing',
-						channel: response.channel
-					});
-					convo.say('What is the due date?');
-					convo.next();
-				}
-			},
-			{
-				callback: function(response, convo) {
-					convo.say({
-						type: 'typing',
-						channel: response.channel
-					});
-					convo.say('How many points is it worth?');
-					convo.next();
-				}
-			},
-			{
-				callback: function(response, convo) {
-					convo.say(response.text);
-					convo.next();
-				}
-			}
-		]);
+controller.hears(['create a card'], 'mention', (bot, message) => {
+	bot.startConversation(message, askCardType);
 	});
 });
+
+askCardType = function(response, convo) {
+	console.log(JSON.stringify(response));
+	convo.say({
+		type: 'typing',
+		channel: response.channel
+	});
+
+	convo.say('Is this a daily goal?');
+	askGoalName(response, convo);
+
+	convo.next();
+}
+
+askGoalName = function(response, convo) {
+	convo.say({
+		type: 'typing',
+		channel: response.channel
+	});
+	convo.say('What is the name of the goal?');
+	askDueDate(response, convo);
+	convo.next();
+}
+
+askDueDate = function(response, convo) {
+	convo.say({
+		type: 'typing',
+		channel: response.channel
+	});
+	convo.say('What is the due date of the goal?');
+	askPointValue(response, convo);
+	convo.next();
+}
+
+askPointValue = function(response, convo) {
+	convo.say({
+		type: 'typing',
+		channel: response.channel
+	});
+	convo.say('How many points is the goal worth?');
+	finish(response, convo);
+	convo.next();
+}
+
+finish = function(response, convo) {
+	convo.say({
+		type: 'typing',
+		channel: response.channel
+	});
+
+	var responses = convo.extractResponses();
+	console.log(JSON.stringify(responses));
+	convo.say('Good Bye!');
+	convo.next();
+}
 
 module.exports = app;

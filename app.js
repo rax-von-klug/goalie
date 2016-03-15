@@ -58,8 +58,7 @@ controller.hears(['create a card'], 'mention', (bot, message) => {
 askCardType = function(response, convo) {
 	console.log(JSON.stringify(response));
 	convo.say({
-		type: 'typing',
-		channel: response.channel
+		type: 'typing'
 	});
 
 	convo.say('Is this a daily goal?');
@@ -70,8 +69,7 @@ askCardType = function(response, convo) {
 
 askGoalName = function(response, convo) {
 	convo.say({
-		type: 'typing',
-		channel: response.channel
+		type: 'typing'
 	});
 	convo.say('What is the name of the goal?');
 	askDueDate(response, convo);
@@ -80,8 +78,7 @@ askGoalName = function(response, convo) {
 
 askDueDate = function(response, convo) {
 	convo.say({
-		type: 'typing',
-		channel: response.channel
+		type: 'typing'
 	});
 	convo.say('What is the due date of the goal?');
 	askPointValue(response, convo);
@@ -90,8 +87,7 @@ askDueDate = function(response, convo) {
 
 askPointValue = function(response, convo) {
 	convo.say({
-		type: 'typing',
-		channel: response.channel
+		type: 'typing'
 	});
 	convo.say('How many points is the goal worth?');
 	finish(response, convo);
@@ -100,8 +96,7 @@ askPointValue = function(response, convo) {
 
 finish = function(response, convo) {
 	convo.say({
-		type: 'typing',
-		channel: response.channel
+		type: 'typing'
 	});
 
 	var responses = convo.extractResponses();

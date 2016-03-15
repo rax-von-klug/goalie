@@ -49,50 +49,50 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 
 		bot.reply(message, reply);
 	});
+});
 
-	controller.hears(['create card'], 'mention', (bot, message) => {
-		bot.startConversation(message, (err, convo) => {
-			convo.ask('Is this a daily goal?', [
-				{
-					pattern: bot.utterances.yes,
-					callback: function(response,convo) {
-						convo.say({
-							type: 'typing',
-							channel: response.channel
-						});
+controller.hears(['create card'], 'mention', (bot, message) => {
+	bot.startConversation(message, (err, convo) => {
+		convo.ask('Is this a daily goal?', [
+			{
+				pattern: bot.utterances.yes,
+				callback: function(response,convo) {
+					convo.say({
+						type: 'typing',
+						channel: response.channel
+					});
 
-						convo.say('What is the goal?');
-  						convo.next();
-					}
-				},
-				{
-					callback: function(response, convo) {
-						convo.say({
-							type: 'typing',
-							channel: response.channel
-						});
-						convo.say('What is the due date?');
+					convo.say('What is the goal?');
 						convo.next();
-					}
-				},
-				{
-					callback: function(response, convo) {
-						convo.say({
-							type: 'typing',
-							channel: response.channel
-						});
-						convo.say('How many points is it worth?');
-						convo.next();
-					}
-				},
-				{
-					callback: function(response, convo) {
-						convo.say(response.text);
-						convo.next();
-					}
 				}
-			]);
-		});
+			},
+			{
+				callback: function(response, convo) {
+					convo.say({
+						type: 'typing',
+						channel: response.channel
+					});
+					convo.say('What is the due date?');
+					convo.next();
+				}
+			},
+			{
+				callback: function(response, convo) {
+					convo.say({
+						type: 'typing',
+						channel: response.channel
+					});
+					convo.say('How many points is it worth?');
+					convo.next();
+				}
+			},
+			{
+				callback: function(response, convo) {
+					convo.say(response.text);
+					convo.next();
+				}
+			}
+		]);
 	});
 });
 

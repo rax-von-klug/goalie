@@ -17,10 +17,10 @@ var bot = controller.spawn({
 });
 
 bot.startRTM((err) => {
-    if (err) throw err;
+    if (err) console.log(err);
 });
 
-var event_types = ['direct_mention', 'direct_message'];
+var event_types = ['direct_mention', 'direct_message', 'mention', 'ambient'];
 
 controller.hears(['daily goals'], event_types, (bot, message) => {
 	bot.say({
@@ -47,11 +47,52 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 						]
 					}
 
-		bot.api.chat.postMessage({
-            text: reply,
-            channel: channel,
-            as_user: true
-        });
+		bot.reply(message, reply);
+	});
+
+	controller.hears(['create card'], 'mention', (bot, message) => {
+		bot.startConversation(message, (err, convo) => {
+			convo.ask('Is this a daily goal?', [
+				{
+					pattern: bot.utterances.yes,
+					callback: function(response,convo) {
+						convo.say({
+							type: 'typing',
+							channel: response.channel
+						});
+
+						convo.say('What is the goal?');
+  						convo.next();
+					}
+				},
+				{
+					callback: function(response, convo) {
+						convo.say({
+							type: 'typing',
+							channel: response.channel
+						});
+						convo.say('What is the due date?');
+						convo.next();
+					}
+				},
+				{
+					callback: function(response, convo) {
+						convo.say({
+							type: 'typing',
+							channel: response.channel
+						});
+						convo.say('How many points is it worth?');
+						convo.next();
+					}
+				},
+				{
+					callback: function(response, convo) {
+						convo.say(response.text);
+						convo.next();
+					}
+				}
+			]);
+		});
 	});
 });
 

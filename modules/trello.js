@@ -9,9 +9,7 @@ var Trello = function() {
 		url = util.format('https://api.trello.com/1/lists/%s/cards?key=%s&token=%s&fields=name,desc,due', list_id, public_key, token);
 
 	this.getGoals = function(callback) {
-		console.log('Trello - Get Goals - Start');
 		requestify.get(url).then(function(response) {
-			console.log('Trello - Get Goals - Success');
 			return callback(response.getBody());
 		}, function(err) {
             console.log(err.getBody());

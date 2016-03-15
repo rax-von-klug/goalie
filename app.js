@@ -20,7 +20,7 @@ bot.startRTM((err) => {
     if (err) console.log(err);
 });
 
-var event_types = ['direct_mention', 'direct_message'];
+var event_types = ['direct_mention', 'direct_message', 'mention'];
 
 controller.hears(['daily goals'], event_types, (bot, message) => {
 	bot.say({

@@ -12,6 +12,8 @@ var controller = botkit.slackbot({
     debug: false
 });
 
+console.log(process.env.BOT_TOKEN);
+
 var bot = controller.spawn({
     token: process.env.BOT_TOKEN
 });

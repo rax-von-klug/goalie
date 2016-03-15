@@ -17,7 +17,7 @@ var bot = controller.spawn({
 });
 
 bot.startRTM((err) => {
-    if (err) throw err;
+    if (err) console.log(err);
 });
 
 var event_types = ['direct_mention', 'direct_message'];

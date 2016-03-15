@@ -52,53 +52,47 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 });
 
 controller.hears(['create a card'], 'mention', (bot, message) => {
-	bot.startConversation(message, askCardType);
+	bot.startConversation(message, (response, convo) => {
+		askCardType
+	});
 });
 
 askCardType = function(response, convo) {
-	console.log(JSON.stringify(response));
-	convo.say({
-		type: 'typing'
+	console.log('First Convo: ' + JSON.stringify(convo));
+
+	convo.ask('Is this a daily goal?', (response, convo) => {
+		console.log('Second Convo: ' + JSON.stringify(convo));
+		console.log('First Response: ' + JSON.stringify(response));
+		askGoalName(response, convo);
+		convo.next();
 	});
 
-	convo.say('Is this a daily goal?');
-	askGoalName(response, convo);
 
 	convo.next();
 }
 
 askGoalName = function(response, convo) {
-	convo.say({
-		type: 'typing'
+	convo.ask('What is the name of the goal?', (response, convo) => {
+		askDueDate(response, convo);
+		convo.next();
 	});
-	convo.say('What is the name of the goal?');
-	askDueDate(response, convo);
-	convo.next();
 }
 
 askDueDate = function(response, convo) {
-	convo.say({
-		type: 'typing'
+	convo.ask('What is the due date of the goal?', (response, convo) => {
+		askPointValue(response, convo);
+		convo.next();
 	});
-	convo.say('What is the due date of the goal?');
-	askPointValue(response, convo);
-	convo.next();
 }
 
 askPointValue = function(response, convo) {
-	convo.say({
-		type: 'typing'
+	convo.ask('How many points is the goal worth?', (response, convo) => {
+		finish(response, convo);
+		convo.next();
 	});
-	convo.say('How many points is the goal worth?');
-	finish(response, convo);
-	convo.next();
 }
 
 finish = function(response, convo) {
-	convo.say({
-		type: 'typing'
-	});
-
 	var responses = convo.extractResponses();
 	console.log(JSON.stringify(responses));
 	convo.say('Good Bye!');

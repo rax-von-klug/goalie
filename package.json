@@ -1,0 +1,26 @@
+{
+  "name": "goalie",
+  "version": "0.0.0",
+  "description": "slack bot pulling trello cards",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rax-von-klug/goalie.git"
+  },
+  "author": "Christopher Lund",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/rax-von-klug/goalie/issues"
+  },
+  "homepage": "https://github.com/rax-von-klug/goalie#readme",
+  "dependencies": {
+    "botkit": "0.0.11",
+    "dotenv": "^2.0.0",
+    "express": "^4.13.4",
+    "lodash": "^4.6.1",
+    "requestify": "^0.1.17"
+  }
+}

@@ -22,7 +22,7 @@ bot.startRTM((err) => {
     if (err) console.log(err);
 });
 
-var event_types = ['direct_mention', 'direct_message', 'mention'];
+var event_types = ['direct_mention', 'direct_message', 'mention', 'ambient'];
 
 controller.hears(['daily goals'], event_types, (bot, message) => {
 	console.log('Slack Bot - Event Heared - Success');
@@ -52,11 +52,7 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 					}
 
 		console.log('Slack Bot - Get Goals - Format');
-		bot.api.chat.postMessage({
-            text: reply,
-            channel: channel,
-            as_user: true
-        });
+		bot.reply(message, reply);
 	});
 });
 

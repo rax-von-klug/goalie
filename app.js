@@ -53,7 +53,6 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 
 controller.hears(['create a card'], 'mention', (bot, message) => {
 	bot.startConversation(message, askCardType);
-	});
 });
 
 askCardType = function(response, convo) {

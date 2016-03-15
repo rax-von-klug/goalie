@@ -25,12 +25,14 @@ bot.startRTM((err) => {
 var event_types = ['direct_mention', 'direct_message', 'mention'];
 
 controller.hears(['daily goals'], event_types, (bot, message) => {
+	console.log('Slack Bot - Event Heared - Success');
 	bot.say({
 		type: 'typing',
 		channel: message.channel
 	});
 
 	trello.getGoals((goals) => {
+		console.log('Slack Bot - Get Goals - Success');
 		var attachment_fields = goals.map(function(goal, index) {
 			return {
 				"value": util.format('%s - %s', (index + 1).toString(), goal.name),
@@ -49,6 +51,7 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 						]
 					}
 
+		console.log('Slack Bot - Get Goals - Format');
 		bot.api.chat.postMessage({
             text: reply,
             channel: channel,

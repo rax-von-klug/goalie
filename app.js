@@ -4,8 +4,10 @@ var express = require('express'),
     botkit = require('botkit'),
 	moment = require('moment-timezone'),
 	util = require('util'),
+	schedule = require('node-schedule'),
     trello = require('./modules/trello'),
     constants = require('./modules/constants'),
+	chatter = require('./modules/chatter'),
     app = express();
 
 
@@ -19,6 +21,10 @@ var bot = controller.spawn({
 
 bot.startRTM((err) => {
     if (err) console.log(err);
+});
+
+var job = schedule.scheduleJob('* /5 * * * *', function() {
+    chatter.poke(bot);
 });
 
 var event_types = ['direct_mention', 'direct_message', 'mention', 'ambient'];
@@ -93,6 +99,10 @@ askDailyGoalName = function(response, convo) {
 }
 
 askDailyGoalDueDate = function(response, convo) {
+	bot.say({
+		type: 'typing',
+		channel: response.channel
+	});
 	convo.ask(constants.questions.daily_goal.when_is_it_due, (response, convo) => {
 		askDailyGoalPointValue(response, convo);
 		convo.next();
@@ -100,6 +110,10 @@ askDailyGoalDueDate = function(response, convo) {
 }
 
 askDailyGoalPointValue = function(response, convo) {
+	bot.say({
+		type: 'typing',
+		channel: response.channel
+	});
 	convo.ask(constants.questions.daily_goal.how_many_points, (response, convo) => {
 		finish(response, convo);
 		convo.next();
@@ -107,6 +121,10 @@ askDailyGoalPointValue = function(response, convo) {
 }
 
 finish = function(response, convo) {
+	bot.say({
+		type: 'typing',
+		channel: response.channel
+	});
 	var responses = convo.extractResponses();
 	console.log(JSON.stringify(responses));
 	convo.say('Good Bye!');

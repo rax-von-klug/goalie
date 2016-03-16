@@ -84,7 +84,7 @@ askCardType = function(response, convo) {
 askDailyGoalName = function(response, convo) {
 	bot.say({
 		type: 'typing',
-		channel: message.channel
+		channel: response.channel
 	});
 	convo.ask(constants.questions.daily_goal.whats_the_name, (response, convo) => {
 		askDailyGoalDueDate(response, convo);

@@ -23,7 +23,7 @@ bot.startRTM((err) => {
     if (err) console.log(err);
 });
 
-var job = schedule.scheduleJob('* /5 * * * *', function() {
+var job = schedule.scheduleJob('0 10 17 * * *', function() {
     chatter.poke(bot);
 });
 

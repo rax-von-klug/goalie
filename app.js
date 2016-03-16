@@ -5,6 +5,7 @@ var express = require('express'),
 	moment = require('moment-timezone'),
 	util = require('util'),
     trello = require('./modules/trello'),
+    constants = require('./modules/constants'),
     app = express();
 
 
@@ -22,7 +23,7 @@ bot.startRTM((err) => {
 
 var event_types = ['direct_mention', 'direct_message', 'mention', 'ambient'];
 
-controller.hears(['daily goals'], event_types, (bot, message) => {
+controller.hears([constants.triggers.daily_goal], event_types, (bot, message) => {
 	bot.say({
 		type: 'typing',
 		channel: message.channel
@@ -51,37 +52,48 @@ controller.hears(['daily goals'], event_types, (bot, message) => {
 	});
 });
 
-controller.hears(['create a card'], 'mention', (bot, message) => {
+controller.hears([constants.triggers.create_card], 'mention', (bot, message) => {
 	bot.startConversation(message, askCardType);
 });
 
 askCardType = function(response, convo) {
-	convo.ask('Is this a daily goal?', (response, convo) => {
-		console.log('First Response: ' + JSON.stringify(response));
-		askGoalName(response, convo);
-		convo.next();
-	});
-
+    console.log('First Response: ' + JSON.stringify(response));
+	convo.ask(constants.questions.what_type_of_card, [
+        {
+            pattern: new RegExp(/^(Daily Goal|DAILY GOAL|daily goal)/i),
+            callback: (response, convo) => {
+                askDailyGoalName(response, convo);
+                convo.next();    
+            }
+        },
+        {
+            pattern: new RegExp(/^(PBI|pbi)/i),
+            callback: (response, convo) => {
+                askPbiGoalName(response, convo);
+                convo.next();
+            }
+        }
+    ]);
 
 	convo.next();
 }
 
-askGoalName = function(response, convo) {
-	convo.ask('What is the name of the goal?', (response, convo) => {
-		askDueDate(response, convo);
+askDailyGoalName = function(response, convo) {
+	convo.ask(constants.questions.daily_goal.whats_the_name, (response, convo) => {
+		askDailyGoalDueDate(response, convo);
 		convo.next();
 	});
 }
 
-askDueDate = function(response, convo) {
-	convo.ask('What is the due date of the goal?', (response, convo) => {
-		askPointValue(response, convo);
+askDailyGoalDueDate = function(response, convo) {
+	convo.ask(constants.questions.daily_goal.when_is_it_due, (response, convo) => {
+		askDailyGoalPointValue(response, convo);
 		convo.next();
 	});
 }
 
-askPointValue = function(response, convo) {
-	convo.ask('How many points is the goal worth?', (response, convo) => {
+askDailyGoalPointValue = function(response, convo) {
+	convo.ask(constants.questions.daily_goal.how_many_points, (response, convo) => {
 		finish(response, convo);
 		convo.next();
 	});

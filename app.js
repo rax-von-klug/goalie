@@ -53,17 +53,20 @@ controller.hears([constants.triggers.daily_goal], event_types, (bot, message) =>
 });
 
 controller.hears([constants.triggers.create_card], 'mention', (bot, message) => {
+	bot.say({
+		type: 'typing',
+		channel: message.channel
+	});
 	bot.startConversation(message, askCardType);
 });
 
 askCardType = function(response, convo) {
-    console.log('First Response: ' + JSON.stringify(response));
 	convo.ask(constants.questions.what_type_of_card, [
         {
             pattern: new RegExp(/^(Daily Goal|DAILY GOAL|daily goal)/i),
             callback: (response, convo) => {
                 askDailyGoalName(response, convo);
-                convo.next();    
+                convo.next();
             }
         },
         {
@@ -79,6 +82,10 @@ askCardType = function(response, convo) {
 }
 
 askDailyGoalName = function(response, convo) {
+	convo.say({
+		type: 'typing',
+		channel: response.channel
+	});
 	convo.ask(constants.questions.daily_goal.whats_the_name, (response, convo) => {
 		askDailyGoalDueDate(response, convo);
 		convo.next();
